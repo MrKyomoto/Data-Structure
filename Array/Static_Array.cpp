@@ -16,13 +16,35 @@ void InitArray(Static_Array &A);
 void DelArray(Static_Array &A);
 bool InsertElm(Static_Array &A, int elm, int n);           // Insert an element to the place n
 int DelElm(Static_Array &A, int type, int elm_or_number);  // Delete the element and return it to the main
-int FindElm(Static_Array &A, int type, int elm_or_number); // Find the Elm and return it to the main
-int FindLength(Static_Array &A);                           // Find the length of the Array and return it to the main
+int FindElm(Static_Array A, int type, int elm_or_number); // Find the Elm and return it to the main
+int FindLength(Static_Array A);                           // Find the length of the Array and return it to the main
+bool OutputArray(Static_Array A);
 
 int main()
 {
     Static_Array Array;
-    InitArray(Array);
+    Static_Array &A = Array;
+    InitArray(A);
+    for (int i = 0; i < 4; i++)
+    {
+        int elm;
+        int n;
+        cin >> elm;
+        cin >> n;
+        InsertElm(A, elm, n);
+    }
+    int type;
+    int elm_or_number;
+    cin >> type;
+    cin >> elm_or_number;
+    DelElm(A, type, elm_or_number);
+
+    cin >> type >> elm_or_number;
+    cout << "The elm u will find is:" << FindElm(Array, type, elm_or_number) << endl;
+
+    cout << "The length of the Array is:" << FindLength(Array) << endl;
+
+    OutputArray(Array);
 }
 
 void InitArray(Static_Array &A)
@@ -44,7 +66,7 @@ bool InsertElm(Static_Array &A, int elm, int n) // Insert an element to the plac
         return false;
     }
 
-    if (1 <= n && n >= A.length + 1)
+    if (1 <= n && n <= A.length + 1)
     {
         for (int i = A.length; i > n - 1; i--)
         {
@@ -74,10 +96,11 @@ void DelArray(Static_Array &A)
 
 int DelElm(Static_Array &A, int type, int elm_or_number) // Delete the element and return it to the main
 {
+    int number, elm;
     switch (type)
     {
     case NUMBER:
-        int number = elm_or_number;
+        number = elm_or_number;
         if (1 <= number && number <= A.length)
         {
             int temp = A.data[number - 1];
@@ -94,7 +117,7 @@ int DelElm(Static_Array &A, int type, int elm_or_number) // Delete the element a
         }
         break;
     case ELM:
-        int elm = elm_or_number;
+        elm = elm_or_number;
         for (int i = 0; i < A.length; i++)
         {
             if (A.data[i] == elm)
@@ -114,4 +137,57 @@ int DelElm(Static_Array &A, int type, int elm_or_number) // Delete the element a
         return -2;
         break;
     }
+}
+
+int FindElm(Static_Array A, int type, int elm_or_number) // Find the Elm and return it to the main
+{
+    int number, elm;
+    switch (type)
+    {
+    case NUMBER:
+        number = elm_or_number;
+        if( 1<= number && number <= A.length)
+        {
+            return A.data[number - 1];
+        }
+        else
+        {
+            cout << "Invalid input number" << endl;
+            return -2;
+        }
+        break;
+    case ELM:
+        elm = elm_or_number;
+        for (int i = 0; i < A.length; i++)
+        {
+            if(A.data[i] == elm)
+            {
+                return elm;
+                break;
+            }
+        }
+        cout << "Invalid input elm" << endl;
+        return -2;
+        break;
+    default:
+        cout << "Invalid input, please choose NUMBER or ELM" << endl;
+        return -2;
+        break;
+    }
+    
+
+}
+
+int FindLength(Static_Array A)                           // Find the length of the Array and return it to the main
+{
+    return A.length;
+}
+
+bool OutputArray(Static_Array A)
+{
+    for (int i = 0; i < A.length; i++)
+    {
+        cout << A.data[i] << endl;
+    }
+    return true;
 }
